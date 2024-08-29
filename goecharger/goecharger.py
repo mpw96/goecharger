@@ -221,7 +221,10 @@ class GoeCharger:
             return {}
 
     def __setParameter(self, parameter, value):
-        setRequest = requests.get("http://%s/mqtt?payload=%s=%s" % (self.host, parameter, value))
+        payload = {
+            "payload": "%s=%s" % (parameter, value)
+        }
+        setRequest = requests.get("http://%s/mqtt" % self.host, params=payload)
         return GoeChargerStatusMapper().mapApiStatusResponse(setRequest.json())
 
     def setAccessType(self, accessType):
